@@ -11,10 +11,10 @@ import { getSnowboardById } from "@/lib/snowboards";
  */
 export async function GET(
   _request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = params;
+    const { id } = await params;
 
     if (!id) {
       return NextResponse.json(
@@ -34,7 +34,7 @@ export async function GET(
 
     return NextResponse.json({ success: true, data: snowboard });
   } catch (error) {
-    console.error(`Error in GET /api/snowboards/${params.id}:`, error);
+    console.error(`Error in GET /api/snowboards/[id]:`, error);
     return NextResponse.json(
       { success: false, error: "Internal server error" },
       { status: 500 }
